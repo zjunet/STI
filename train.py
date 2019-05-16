@@ -86,9 +86,9 @@ print('load successfully')
 test_loader = torch.utils.data.DataLoader(DataSet(load_dir, test_idx), batch_size = batch_size)
 
 # print(input_data.shape[1])
-encoder = MemoryEncoder(input_size, embed_size ,hidden_size, K)
-neighbor_encoder = MemoryEncoder(input_size, embed_size ,hidden_size, K)
-decoder = DecoderRNN(input_size, embed_size, hidden_size, 6, K)
+encoder = MemoryEncoder(input_size, hidden_size, K)
+neighbor_encoder = MemoryEncoder(input_size, hidden_size, K)
+decoder = DecoderRNN(input_size, hidden_size, K)
 
 if th.cuda.is_available():
     encoder = encoder.cuda()
@@ -104,10 +104,7 @@ if th.cuda.is_available():
     decoder = decoder.cuda()
 
 # Train the model
-# total_step = len(train_loader)
-curve = []
-curve_train = []
-best_performance = [10000, 10000]
+
 for epoch in range(num_epochs):
     loss_all, num_all = 0, 0
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size = batch_size, shuffle = True)
@@ -140,7 +137,6 @@ for epoch in range(num_epochs):
     torch.save(neighbor_encoder.state_dict(), load_dir + 'neighbor_encoder.pkl')
     torch.save(decoder.state_dict(), load_dir + 'decoder.pkl')
 
-    last_five = []
     if epoch % 200 == 0:
         loss_all, loss_abs_all,num_all = 0, 0, 0
         for i, (i_data, i_mask, i_interval, i_length, u_all, m_in, m_out, m_all, n_input, n_inter, n_len, n_data, n_mask) in enumerate(test_loader):
