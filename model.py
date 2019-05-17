@@ -149,18 +149,16 @@ class LSTMCell(nn.Module):
         return h_t, (h_t, c_t)
 
 class MemoryEncoder(nn.Module):
-    def __init__(self, input_size, embed_size, hidden_size, K, L=1, bias=True, dropout=0.0,
+    def __init__(self, input_size, hidden_size, K, L=1, bias=True, dropout=0.0,
                  dropout_method='pytorch', jit=False):
         super(MemoryEncoder, self).__init__()
         self.input_size = input_size
         self.hidden_size = hidden_size
-        self.embed_size = embed_size
         self.bias = bias
         self.K = K
         self.L = L
         self.dropout = dropout
         self.attn = nn.Linear(hidden_size, K, bias=False)
-        self.fuse = nn.Linear(hidden_size + embed_size, hidden_size)
 
         assert(dropout_method.lower() in ['pytorch', 'gal', 'moon', 'semeniuta'])
         self.dropout_method = dropout_method
@@ -187,7 +185,6 @@ class MemoryEncoder(nn.Module):
             hs[:, i, :], hidden = self.lstm_cell(x[:, i, :], interval[:, i], hidden)
             cs[:, i, :] = hidden[1]
 
-        # fuse = self.fuse(th.cat((hs, time_embed), dim=2))
         attn = self.attn(hs) * self.L # B * S * K
         attn = F.softmax(attn, dim=1) * mask.unsqueeze(2)
         # attn = F.sigmoid(attn) * mask.unsqueeze(2)
@@ -198,28 +195,21 @@ class MemoryEncoder(nn.Module):
 
 
 class DecoderRNN(nn.Module):
-    def __init__(self, input_size, embed_size, hidden_size, output_size, K, neighbor_num = 8, dropout=0.1):
+    def __init__(self, input_size,hidden_size, K, neighbor_num = 8, dropout=0.1):
         super(DecoderRNN, self).__init__()
 
         # Keep for reference
         self.input_size = input_size
-        self.embed_size = embed_size
         self.hidden_size = hidden_size
-        self.output_size = output_size
         self.dropout = dropout
 
         # Define layers
-        self.embedding = nn.Embedding(output_size, hidden_size)
-        self.embedding_dropout = nn.Dropout(dropout)
         self.K = K
         self.select_attn = nn.Linear(hidden_size, K, bias=False)
         self.neighbor_attn = nn.Linear(hidden_size, K * 8, bias=False)
         self.lstm_cell = th.nn.LSTMCell(self.input_size, hidden_size)
 
         self.net = nn.Sequential(nn.Linear(hidden_size * 1, hidden_size), nn.LeakyReLU(), nn.Linear(hidden_size, hidden_size), nn.LeakyReLU(),nn.Linear(hidden_size, input_size))
-
-        # Choose attention model
-        # if attn_model != 'none':
 
     def forward(self, input_seq, last_context, last_hidden, encoder_matrix, neighbor_matrix, neighbor_data, neighbor_mask):
         hidden = self.lstm_cell(input_seq,last_hidden)
@@ -262,7 +252,6 @@ def train_batch(input_batches, input_lengths, input_interval, input_mask, target
                                              neighbor_interval.size(3))
     tmp_neighbor_length = neighbor_length.view(neighbor_length.size(0) * neighbor_length.size(1), neighbor_length.size(2))
 
-        # Run words through encoder
     encoder_outputs, encoder_hidden, encoder_context = encoder(input_batches, input_interval, input_mask, None)
     neighbor_encoder_outputs, neighbor_encoder_hidden, neighbor_encoder_context = neighbor_encoder(tmp_neighbor_input, tmp_neighbor_interval, tmp_neighbor_length, None)
     neighbor_encoder_context = neighbor_encoder_context.view(neighbor_input.size(0), neighbor_input.size(1), neighbor_encoder_context.size(1),neighbor_encoder_context.size(2))
@@ -320,8 +309,7 @@ def train_batch(input_batches, input_lengths, input_interval, input_mask, target
             random_sample = random_sample.cuda()
         for t in range(max_length):
             mask = target_mask[:, t] * random_sample[:,t]
-            # print(mask)
-            # import sys; sys.exit()
+
             decoder_output, decoder_context, decoder_hidden = decoder(
                 decoder_input, decoder_context, decoder_hidden, encoder_context, neighbor_encoder_context, neighbor_data[:,:,t], neighbor_mask[:,:,t]
             )
@@ -329,9 +317,7 @@ def train_batch(input_batches, input_lengths, input_interval, input_mask, target
             all_decoder_outputs[:,t] = decoder_output
             decoder_input = target_batches[:, t] * mask \
                                 + (1 - mask) * decoder_output
-        # target_mask = target_mask * (1 - random_sample)
-        if th.sum(target_mask) == 0:
-            return 0, 1
+
         loss = th.sum((all_decoder_outputs - target_batches) * (all_decoder_outputs - target_batches) * target_mask)
         loss.backward()
         ec = th.nn.utils.clip_grad_norm_(encoder.parameters(), clip)
@@ -358,7 +344,7 @@ def test_batch(input_batches, input_lengths, input_interval, input_mask, target_
                                              neighbor_interval.size(3))
     tmp_neighbor_length = neighbor_length.view(neighbor_length.size(0) * neighbor_length.size(1), neighbor_length.size(2))
 
-        # Run words through encoder
+
     encoder_outputs, encoder_hidden, encoder_context = encoder(input_batches, input_interval, input_mask, None)
     neighbor_encoder_outputs, neighbor_encoder_hidden, neighbor_encoder_context = neighbor_encoder(tmp_neighbor_input, tmp_neighbor_interval, tmp_neighbor_length, None)
     neighbor_encoder_context = neighbor_encoder_context.view(neighbor_input.size(0), neighbor_input.size(1), neighbor_encoder_context.size(1),neighbor_encoder_context.size(2))
