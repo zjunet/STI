@@ -26,14 +26,15 @@ Given an array of users' time series data and the social relationship among thes
 
 The input files are expected to be two parts: 
 
-(1) data file: a numpy array (.npy) file which contains users' data shaped N * L * D, where N denotes the number of users, L denotes the sequence length and D denotes the number of channels at each time stamp. **The missing data should be marked as -1(or manually marked).**
+(1) data file: a numpy array (.npy) file which contains users' data shaped N * L * D, where N denotes the number of users, L denotes the sequence length and D denotes the number of channels at each time stamp. **The missing data should be marked as -1 (or manually marked).**
 
 (2) social network file: a pickle file which contains the social network information formated as the adjacent list:
 ```
 [[node0 's neighbors], [node1's neighbors],..., nodeN's neighbors]
 e.g. [[1], [0,2,3], [1,3,4], [2]]
 ```
-each node index is corresponding to the index of the row in the data array in (1)
+each node index is corresponding to the index of the row in the data array in (1).
+
 See an example in the ```data``` directory.
 ### Output Format
 The program outputs to a file named ```imputed_data.npy``` which contains the data after imputation, i.e., the missing elements are replaced by reasonable values.
@@ -68,7 +69,7 @@ optional arguments:
   --log                 output log information
 ```
 ## Reference
-[1] Zongtao, L; Yang, Y; Wei, H; Zhongyi, T; Ning, L and Fei, W, 2019, How Do Your Neighbors Disclose Your Information: Social-Aware Time Series Imputation, In WWW, 2019 
+[1] Zongtao, L; Yang, Y; Wei, H; Zhongyi, T; Ning, L and Fei, W, 2019, [How Do Your Neighbors Disclose Your Information: Social-Aware Time Series Imputation](https://dl.acm.org/authorize.cfm?key=N672201), In WWW, 2019 
 ```
  @inproceedings{liu2019imputation, 
     title={How Do Your Neighbors Disclose Your Information: Social-Aware Time Series Imputation},
