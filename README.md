@@ -12,7 +12,7 @@ This project is implemented in Python 3.6
 - PyTorch. Version 0.4.0 has been tested. Note that the GPU support is encouraged as it greatly boosts training efficiency.
 - Other Python modules. Some other Python module dependencies are listed in ```requirements.txt```, which can be easily installed with pip ```pip install -r requirements.txt```
 
-### Testing the Project
+### Testing the Project:
 
 ``` 
 python impute.py -f data/data.npy -n data/network.pkl
