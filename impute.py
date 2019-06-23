@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-f', '--data_file', type=str, default='data/data.npy', help='path of input file')
 parser.add_argument('-n', '--social_network', type=str, default='data/network.pkl', help='path of network file')
 parser.add_argument('-o', '--output_file', type=str, default='data/imputed_data', help='path of output file')
-parser.add_argument('-m', '--missing_label', type=float, default=-1)
+parser.add_argument('-m', '--missing_marker', type=float, default=-1)
 parser.add_argument('-s', '--hidden_size', type=int, default=32, help='size of hidden feature in LSTM')
 parser.add_argument('-b', '--batch_size', type=int, default=256)
 parser.add_argument('-k', '--dim_memory', type=int, default=32, help='dimension of memory matrix')
@@ -59,7 +59,7 @@ class DataSet(torch.utils.data.Dataset):
 
         self.input_data, self.input_time, self.input_mask, self.input_interval, self.input_length, \
            self.output_mask_all, self.origin_u, self.neighbor_length, self.neighbor_interval, self.neighbor_time, self.neighbor_data, self.lower, self.upper\
-            = dataprocess.load_data(np.load(args.data_file), pickle.load(open(args.social_network, 'rb')), args.missing_label)
+            = dataprocess.load_data(np.load(args.data_file), pickle.load(open(args.social_network, 'rb')), args.missing_marker)
         self.input_interval = np.expand_dims(self.input_interval, axis=2)
         self.neighbor_interval = np.expand_dims(self.neighbor_interval, axis=3)
         self.mask_in = (self.output_mask_all == 1).astype(dtype = np.float32)
