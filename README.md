@@ -26,7 +26,8 @@ Given an array of users' time series data and the social relationship among thes
 
 The input files are expected to be two parts: 
 
-(1) data file: a numpy array (.npy) file which contains users' data shaped N * L * D, where N denotes the number of users, L denotes the sequence length and D denotes the number of channels at each time stamp. **The missing data should be marked as -1. **
+(1) data file: a numpy array (.npy) file which contains users' data shaped N * L * D, where N denotes the number of users, L denotes the sequence length and D denotes the number of channels at each time stamp. **The missing data should be marked as -1.**
+
 (2) social network file: a pickle file which contains the social network information formated as the adjacent list:
 ```
 [[node0 's neighbors], [node1's neighbors],..., nodeN's neighbors]
