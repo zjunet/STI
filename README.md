@@ -35,7 +35,7 @@ e.g. [[1], [0,2,3], [1,3,4], [2]]
 ```
 each node index is corresponding to the index of the row in the data array in (1).
 
-See an example in the ```data``` directory.
+**See the sample data in the data directory.**
 ### Output Format
 The program outputs to a file named ```imputed_data.npy``` which contains the data after imputation, i.e., the missing elements are replaced by reasonable values.
 ### Main Script
@@ -43,9 +43,9 @@ The help of main script can be obtained by excuting command:
 ```
 python impute.py -h
 usage: impute.py [-h] [-f DATA_FILE] [-n SOCIAL_NETWORK] [-o OUTPUT_FILE]
-                 [-m MISSING_LABEL] [-s HIDDEN_SIZE] [-b BATCH_SIZE]
-                 [-k DIM_MEMORY] [-e NUM_EPOCH] [-l LEARNING_RATE]
-                 [-w WEIGHT_DECAY] [-d DROPOUT] [-r DECODER_LEARNING_RATIO]
+                 [-m MISSING_MARKER] [-b BATCH_SIZE] [-e NUM_EPOCH]
+                 [-s HIDDEN_SIZE] [-k DIM_MEMORY] [-l LEARNING_RATE]
+                 [-d DROPOUT] [-r DECODER_LEARNING_RATIO] [-w WEIGHT_DECAY]
                  [--log]
 
 optional arguments:
@@ -57,17 +57,26 @@ optional arguments:
   -o OUTPUT_FILE, --output_file OUTPUT_FILE
                         path of output file
   -m MISSING_MARKER, --missing_marker MISSING_MARKER
-  -s HIDDEN_SIZE, --hidden_size HIDDEN_SIZE
-                        size of hidden feature in LSTM
+                        marker of missing elements, default value is -1
   -b BATCH_SIZE, --batch_size BATCH_SIZE
-  -k DIM_MEMORY, --dim_memory DIM_MEMORY
-                        dimension of memory matrix
+                        the number of samples in each batch, default value is
+                        256
   -e NUM_EPOCH, --num_epoch NUM_EPOCH
+                        number of epoch, default value is 200
+  -s HIDDEN_SIZE, --hidden_size HIDDEN_SIZE
+                        size of hidden feature in LSTM, default value is 32
+  -k DIM_MEMORY, --dim_memory DIM_MEMORY
+                        dimension of memory matrix, default value is 32
   -l LEARNING_RATE, --learning_rate LEARNING_RATE
-  -w WEIGHT_DECAY, --weight_decay WEIGHT_DECAY
   -d DROPOUT, --dropout DROPOUT
+                        the dropout rate of output layers, default value is
+                        0.8
   -r DECODER_LEARNING_RATIO, --decoder_learning_ratio DECODER_LEARNING_RATIO
-  --log                 output log information
+                        ratio between the learning rate of decoder and
+                        encoder, default value is 10
+  -w WEIGHT_DECAY, --weight_decay WEIGHT_DECAY
+  --log                 print log information, you can see the train loss in
+                        each epoch
 ```
 ## Reference
 [1] Zongtao, L; Yang, Y; Wei, H; Zhongyi, T; Ning, L and Fei, W, 2019, [How Do Your Neighbors Disclose Your Information: Social-Aware Time Series Imputation](https://dl.acm.org/authorize.cfm?key=N672201), In WWW, 2019 
