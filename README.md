@@ -41,6 +41,7 @@ The program outputs to a file named ```imputed_data.npy``` which contains the da
 ### Main Script
 The help of main script can be obtained by excuting command:
 ```
+python impute.py -h
 usage: impute.py [-h] [-f DATA_FILE] [-n SOCIAL_NETWORK] [-o OUTPUT_FILE]
                  [-m MISSING_LABEL] [-s HIDDEN_SIZE] [-b BATCH_SIZE]
                  [-k DIM_MEMORY] [-e NUM_EPOCH] [-l LEARNING_RATE]
