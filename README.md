@@ -35,7 +35,7 @@ e.g. [[1], [0,2,3], [1,3,4], [2]]
 ```
 each node index is corresponding to the index of the row in the data array in (1).
 
-**See the sample data in the data directory.**
+**See the sample data in the ```data``` directory.**
 ### Output Format
 The program outputs to a file named ```imputed_data.npy``` which contains the data after imputation, i.e., the missing elements are replaced by reasonable values.
 ### Main Script
