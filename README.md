@@ -15,7 +15,7 @@ This project is implemented in Python 3.6
 ### Testing the Project:
 
 ``` 
-python impute.py -f data/data.npy -n data/network.pkl
+python impute.py -f data/data.npy -n data/network.pkl -o data/imputed_data.npy
 ```
 
 ## Usage

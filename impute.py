@@ -15,7 +15,7 @@ import pickle
 parser = argparse.ArgumentParser()
 parser.add_argument('-f', '--data_file', type=str, default='data/data.npy', help='path of input file')
 parser.add_argument('-n', '--social_network', type=str, default='data/network.pkl', help='path of network file')
-parser.add_argument('-o', '--output_file', type=str, default='data/imputed_data', help='path of output file')
+parser.add_argument('-o', '--output_file', type=str, default='data/imputed_data.npy', help='path of output file')
 parser.add_argument('-m', '--missing_marker', type=float, default=-1, help='marker of missing elements, default value is -1')
 parser.add_argument('-b', '--batch_size', type=int, default=256, help='the number of samples in each batch, default value is 256')
 parser.add_argument('-e', '--num_epoch', type=str, default=200, help='number of epoch, default value is 200')
@@ -158,5 +158,5 @@ for i, (i_data, i_mask, i_interval, i_length, u_all, m_in, m_out, m_all, n_input
 # print(impute_data_all[0], type(impute_data_all[0]))
 impute_data_all = np.concatenate(impute_data_all, axis=0)
 impute_data_all = impute_data_all * (test_dataset.upper - test_dataset.lower) + test_dataset.lower
-np.save('imputed_data', impute_data_all[:,::-1])
-print('finish')
+np.save(args.output_file, impute_data_all[:,::-1])
+print('finish, imputed data is dump in {}'.format(args.output_file))
