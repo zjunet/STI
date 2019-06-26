@@ -18,7 +18,7 @@ parser.add_argument('-n', '--social_network', type=str, default='data/network.pk
 parser.add_argument('-o', '--output_file', type=str, default='data/imputed_data.npy', help='path of output file')
 parser.add_argument('-m', '--missing_marker', type=float, default=-1, help='marker of missing elements, default value is -1')
 parser.add_argument('-b', '--batch_size', type=int, default=256, help='the number of samples in each batch, default value is 256')
-parser.add_argument('-e', '--num_epoch', type=str, default=200, help='number of epoch, default value is 200')
+parser.add_argument('-e', '--num_epoch', type=int, default=200, help='number of epoch, default value is 200')
 parser.add_argument('-s', '--hidden_size', type=int, default=32, help='size of hidden feature in LSTM, default value is 32')
 parser.add_argument('-k', '--dim_memory', type=int, default=32, help='dimension of memory matrix, default value is 32')
 parser.add_argument('-l', '--learning_rate', type=float, default=0.001)
