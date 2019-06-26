@@ -122,8 +122,6 @@ for epoch in range(num_epochs):
             n_input = n_input.cuda()
             n_inter = n_inter.cuda()
             n_len = n_len.cuda()
-            n_data = n_data.cuda()
-            n_mask = n_mask.cuda()
 
         start = time.time()
         loss, num = train_batch(input, i_length, i_interval,i_mask, u_all, m_in, n_input, n_inter, n_len,
