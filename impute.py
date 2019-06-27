@@ -143,6 +143,7 @@ for i, (i_data, i_mask, i_interval, i_length, u_all, m_in, m_out, m_all, n_input
         i_length = i_length.cuda()
         i_interval = i_interval.cuda()
         i_mask = i_mask.cuda()
+        i_data = i_data.cuda()
         m_out = m_out.cuda()
         m_in = m_in.cuda()
         m_all = m_all.cuda()
