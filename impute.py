@@ -147,6 +147,9 @@ for i, (i_data, i_mask, i_interval, i_length, u_all, m_in, m_out, m_all, n_input
         m_in = m_in.cuda()
         m_all = m_all.cuda()
         u_all = u_all.cuda()
+        n_input = n_input.cuda()
+        n_inter = n_inter.cuda()
+        n_len = n_len.cuda()
 
     imputed_data = impute_batch(i_data, i_length, i_interval, i_mask, u_all, m_all, n_input, n_inter, n_len,
             encoder.eval(), neighbor_encoder.eval(), decoder.eval())
